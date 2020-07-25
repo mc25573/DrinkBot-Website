@@ -1,10 +1,14 @@
 .paragraph1 {
     text-align: center;
     margin-top: 40px;
+    
 }
 
 .heading1 {
     text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+
 }
 
 .body {
@@ -16,7 +20,7 @@
     height: 300px;
     border-radius: 7px;
     box-shadow: 1px 1px 15px 0 #8d8d8d;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: transform 0.3s ease-in-out;
     
 }
@@ -36,12 +40,13 @@
 
 }
 
-.drink_text_div{
+.drink_text_div {
     height: 33%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    
 }
 
 .drinks_grid {
@@ -72,11 +77,28 @@
     color: #2c2b2b;
     text-decoration: none;
     margin: 0px 10px;
+    font-size: 24px;
 }
 
+h6 {
+    font-weight: bold !important;
 
+}
 
+ol {
+    counter-reset: list !important;
+}
 
+ol > li {
+    list-style: none !important;
+    position: relative !important;
+}
 
+ol > li:before {
+    counter-increment: list !important;
+    content: counter(list, lower-alpha) ") " !important;
+    position: absolute !important;
+    left: -1.4em !important;
+}
 
 

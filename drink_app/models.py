@@ -37,6 +37,14 @@ class Drink(models.Model):
     thumbnail = models.URLField(max_length=300)
     mix_type = models.CharField(max_length=100)
     
+    def get_ingrs(self):
+        return [self.ingredient1,self.ingredient2,self.ingredient3,self.ingredient4,self.ingredient5,self.ingredient6,
+                self.ingredient7,self.ingredient8,self.non_pump_ingr1,self.non_pump_ingr2,self.non_pump_ingr3]
+    
+    def get_meas(self):
+        return [self.measure1,self.measure2,self.measure3,self.measure4,self.measure5,self.measure6,
+                self.measure7,self.measure8,self.non_pump_meas1,self.non_pump_meas2,self.non_pump_meas3]
+    
     def __str__(self):
         return self.name
     
