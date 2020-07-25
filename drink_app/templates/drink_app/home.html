@@ -14,7 +14,8 @@
             <div class="drinks_grid">
                 {% for drink in drinks %}
                     <a data-toggle="modal" href="#Modal{{ forloop.counter0 }}" class="drink_block">
-                        <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;"></div>
+                        <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;">
+                        </div>
                         <div class="drink_text_div">
                             <h2 class="drink_name">{{ drink.name|title }}</h2>
                         </div>
@@ -23,7 +24,7 @@
                     
                     <!-- Modal -->
                     <div class="modal fade" id="Modal{{ forloop.counter0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                      <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-dialog modal-dialog-centered" role="document" class="modal-dialog modal-lg">
                         <div class="modal-content">
                           <div class="modal-header">
                             <h4 class="modal-title" id="exampleModalCenterTitle">{{ drink.name|title }}</h4>
@@ -32,28 +33,41 @@
                             </button>
                           </div>
                           <div class="modal-body"> 
-                            <h6 class="ingr_heading"> Ingredients </h6> 
-                            <ol>                                                          
-                                {% for ingr in drink.get_ingrs %}
-                                    {% if ingr != 'None' %}
-                                        <li> {{ ingr|title }} </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ol>
-                            <h6 class="ingr_heading"> Measurements </h6> 
-                            <ol>                                                          
-                                {% for meas in drink.get_meas %}
-                                    {% if meas != 'None' %}
-                                        <li> {{ meas|title }} </li>
-                                    {% endif %}
-                                {% endfor %}
-                            </ol>
+                            <div class="d-flex justify-content-center">
+                                <div class="modal_img rounded" style="background:url('{{drink.thumbnail}}'); background-size: contain;background-position: 50% 50%;background-repeat: no-repeat;">
+                                </div>
+                            </div>
+                            <div class="modal_drink_descript d-flex flex-row justify-content-around">
+                                <div>
+                                    <h6> Ingredients </h6> 
+                                    <ol>                                                          
+                                        {% for ingr in drink.get_ingrs %}
+                                            {% if ingr != 'None' %}
+                                                <li> {{ ingr|title }} </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                                <div>
+                                    <h6> Measurements </h6> 
+                                    <ol>                                                          
+                                        {% for meas in drink.get_meas %}
+                                            {% if meas != 'None' %}
+                                                <li> {{ meas }} </li>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </ol>  
+                                </div>                         
+                            </div>
                             <h6 class="ingr_heading"> Instructions </h6> 
-                            <p> {{ drink.instructions }} </p>
+                                <p> {{ drink.instructions }} </p>
                           </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                          <div class="modal-footer d-flex flex-column justify-content-center">
+                            <form action="post">
+                                {% csrf_token %}
+                                {{ make_drink_form }}                           
+                                <button type="submit" class="btn btn-primary make_drink_btn">Make Drink</button>
+                            </form>
                           </div>
                         </div>
                       </div>

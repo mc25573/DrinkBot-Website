@@ -21,8 +21,7 @@
     border-radius: 7px;
     box-shadow: 1px 1px 15px 0 #8d8d8d;
     text-decoration: none !important;
-    transition: transform 0.3s ease-in-out;
-    
+    transition: transform 0.3s ease-in-out;    
 }
 
 .drink_block:hover {
@@ -37,6 +36,16 @@
     background-position: 50% 50%;
     background-size: cover;
     background-repeat: no-repeat;
+    
+
+}
+
+.modal_img {
+    height: 300px;
+    width: 300px;
+    background-position: 50% 50%;
+    background-size: contain;
+    background-repeat: no-repeat;
 
 }
 
@@ -46,6 +55,8 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    justify-items: center;
+    align-content: center;
     
 }
 
@@ -57,9 +68,10 @@
   grid-auto-flow: row dense;
   align-content: center;
   justify-content: center;
+  align-items: center;
+  justify-items: center !important;
   width: 90vw;
   max-width: 1600px;
-  
 }
 
 .drink_select_sec {
@@ -70,6 +82,13 @@
     margin-top: 20px;
     margin-bottom: 40px;
     
+}
+
+.drink_grid_wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: row;
 }
 
 .drink_name {
@@ -100,5 +119,36 @@ ol > li:before {
     position: absolute !important;
     left: -1.4em !important;
 }
+
+.modal_drink_descript {
+    margin-top: 20px;
+
+}
+
+/*
+button {
+    
+	padding: 0 !important;
+	border-width: 0px !important;
+	background-color: white !important;
+
+}
+button:focus,button:active {
+   outline: none !important;
+   background-color: white !important
+   
+}
+*/
+
+.ingr_heading {
+    text-align: center;
+}
+
+.make_drink_btn {
+    margin-top: 10px !important;
+}
+
+
+
 
 
