@@ -3,16 +3,44 @@
 
 <head>
   <meta charset="utf-8">
+  {% load static %}
+  <link rel="stylesheet" type="text/css" href="{% static 'drink_app/styles.css' %}">
+  
   <title>Drink Bot</title>
+  <link rel="icon" href="{% static 'drink_app/header_icon.png' %}">
 </head>
 
 <body class="body">
+
     <div class="intro-sec">
         <div class="home-heading-div">
-            <h1 class="heading">Drink Bot</h1>
-            <p class="paragraph1">Available Drinks:</p>
+            <h1 class="heading1">Drink Bot</h1>
+            <p class="paragraph1">Available Drinks</p>
         </div>
     </div>
+    
+    <div class="drink_select_sec">
+        <div class="drink_grid_wrapper">
+            <div class="drinks_grid">
+                {% for drink in drinks %}
+                    <a href="#" class="drink_block">
+                        <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;"></div>
+                        <div class="drink_text_div">
+                            <h2 class="drink_name">{{ drink.name }}</h2>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
 </body>
 
 </html>
+
+
+
+
+
+
+
