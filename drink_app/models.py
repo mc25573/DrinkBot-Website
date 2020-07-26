@@ -38,15 +38,30 @@ class Drink(models.Model):
     mix_type = models.CharField(max_length=100)
     
     def get_ingrs(self):
-        return [self.ingredient1,self.ingredient2,self.ingredient3,self.ingredient4,self.ingredient5,self.ingredient6,
+        all_ingr = [self.ingredient1,self.ingredient2,self.ingredient3,self.ingredient4,self.ingredient5,self.ingredient6,
                 self.ingredient7,self.ingredient8,self.non_pump_ingr1,self.non_pump_ingr2,self.non_pump_ingr3]
+        ingredients = []
+        
+        for ingr in all_ingr:
+            if ingr != 'None':
+                ingredients.append(ingr)
+                
+        return ingredients
     
     def get_meas(self):
-        return [self.measure1,self.measure2,self.measure3,self.measure4,self.measure5,self.measure6,
+        all_meas = [self.measure1,self.measure2,self.measure3,self.measure4,self.measure5,self.measure6,
                 self.measure7,self.measure8,self.non_pump_meas1,self.non_pump_meas2,self.non_pump_meas3]
+        measures = []
+        
+        for meas in all_meas:
+            if meas != 'None':
+                measures.append(meas)
+        
+        return measures
     
     def __str__(self):
         return self.name
+    
     
 class Pump(models.Model):
     name = models.CharField(max_length=100)
@@ -54,8 +69,15 @@ class Pump(models.Model):
     
     def __str__(self):
         return self.name
+   
     
 class Extra(models.Model):
+    name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.name
+    
+class Ingredient(models.Model):
     name = models.CharField(max_length=50)
     
     def __str__(self):

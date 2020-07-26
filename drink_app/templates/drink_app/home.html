@@ -5,7 +5,14 @@
     <div class="intro-sec">
         <div class="home-heading-div">
             <h1 class="heading1">Drink Bot</h1>
-            <p class="paragraph1">Available Drinks</p>
+            {% if messages %}
+                {% for message in messages %}               
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>       
+                {% endfor %}
+            {% endif %}
+            <p class="paragraph1">Available Drinks</p>            
         </div>
     </div>
     
@@ -27,7 +34,7 @@
                       <div class="modal-dialog modal-dialog-centered" role="document" class="modal-dialog modal-lg">
                         <div class="modal-content">
                           <div class="modal-header">
-                            <h4 class="modal-title" id="exampleModalCenterTitle">{{ drink.name|title }}</h4>
+                            <h4 class="modal-title" id="exampleModalCenterTitle"> {{ drink.name|title }} </h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                               <span aria-hidden="true">&times;</span>
                             </button>
@@ -41,31 +48,28 @@
                                 <div>
                                     <h6> Ingredients </h6> 
                                     <ol>                                                          
-                                        {% for ingr in drink.get_ingrs %}
-                                            {% if ingr != 'None' %}
-                                                <li> {{ ingr|title }} </li>
-                                            {% endif %}
+                                        {% for ingr in drink.get_ingrs %}                                           
+                                            <li> {{ ingr|title }} </li>                                            
                                         {% endfor %}
                                     </ol>
                                 </div>
                                 <div>
                                     <h6> Measurements </h6> 
                                     <ol>                                                          
-                                        {% for meas in drink.get_meas %}
-                                            {% if meas != 'None' %}
-                                                <li> {{ meas }} </li>
-                                            {% endif %}
+                                        {% for meas in drink.get_meas %}                                            
+                                            <li> {{ meas }} </li>                                            
                                         {% endfor %}
                                     </ol>  
                                 </div>                         
                             </div>
                             <h6 class="ingr_heading"> Instructions </h6> 
-                                <p> {{ drink.instructions }} </p>
+                                <p style="text-align: center;"> {{ drink.instructions }} </p>
                           </div>
                           <div class="modal-footer d-flex flex-column justify-content-center">
-                            <form action="post">
+                            <form class="d-flex flex-column justify-content-center" method="post">
                                 {% csrf_token %}
-                                {{ make_drink_form }}                           
+                                {{ make_drink_form }} 
+                                <input type="hidden" name="hidden_field" value="{{ drink.name }}">                         
                                 <button type="submit" class="btn btn-primary make_drink_btn">Make Drink</button>
                             </form>
                           </div>

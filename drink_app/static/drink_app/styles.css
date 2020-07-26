@@ -1,6 +1,6 @@
 .paragraph1 {
     text-align: center;
-    margin-top: 40px;
+    margin-top: 20px;
     
 }
 
@@ -79,7 +79,7 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    margin-top: 20px;
+    margin-top: 0px;
     margin-bottom: 40px;
     
 }
@@ -144,11 +144,34 @@ button:focus,button:active {
     text-align: center;
 }
 
+
 .make_drink_btn {
-    margin-top: 10px !important;
+    margin-top: 15px !important;
 }
 
+.alert-message {
+    text-align: center;
+}
 
+.alert {
+    max-width: 500px;
+    margin-bottom: -10px;
+    
+}
 
-
-
+.home-heading-div{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;
+    flex-direction: column;
+}   
+    
+    
+    
+    
+    
+    
+    
+    

@@ -2,6 +2,9 @@ from django.shortcuts import render
 from .models import Drink
 from django.db.models import Q
 from .forms import MakeDrinkForm
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib import messages
 
 def home(request):
     
@@ -23,6 +26,9 @@ def home(request):
         form = MakeDrinkForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            choice = form.cleaned_data['']
+            choice = [form.cleaned_data['drink_size'],form.cleaned_data['hidden_field']]
+            print(choice)
+            messages.success(request, f'"{choice[1]}" Sent to Barbot')
+            return HttpResponseRedirect(reverse('drinks-home')) # necessary to avoid form resubmit
     
     return render(request,'drink_app/home.html',context)
