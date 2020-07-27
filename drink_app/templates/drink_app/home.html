@@ -19,6 +19,7 @@
     <div class="drink_select_sec">
         <div class="drink_grid_wrapper">
             <div class="drinks_grid">
+            
                 {% for drink in drinks %}
                     <a data-toggle="modal" href="#Modal{{ forloop.counter0 }}" class="drink_block">
                         <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;">
@@ -27,8 +28,7 @@
                             <h2 class="drink_name">{{ drink.name|title }}</h2>
                         </div>
                     </a>
-                    
-                    
+                                      
                     <!-- Modal -->
                     <div class="modal fade" id="Modal{{ forloop.counter0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                       <div class="modal-dialog modal-dialog-centered" role="document" class="modal-dialog modal-lg">
@@ -48,8 +48,8 @@
                                 <div>
                                     <h6> Ingredients </h6> 
                                     <ol>                                                          
-                                        {% for ingr in drink.get_ingrs %}                                           
-                                            <li> {{ ingr|title }} </li>                                            
+                                        {% for ingr,sub in drink.get_ingrs_subs %}                                           
+                                            <li> {{ ingr|title }} {% if sub != 'None' and sub != ingr %}({{sub|title}}) {% endif %}</li>                                            
                                         {% endfor %}
                                     </ol>
                                 </div>
@@ -77,6 +77,7 @@
                       </div>
                     </div>
                 {% endfor %}
+                
             </div>
         </div>
     </div>

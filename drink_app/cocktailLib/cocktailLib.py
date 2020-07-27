@@ -23,6 +23,7 @@ def soft_search(pumps,extras,all_ingrs,ingrs_dict):
             temp_ingrs_dict['wild turkey'] = (True,ingr)
             temp_ingrs_dict['jack daniels'] = (True,ingr)
             temp_ingrs_dict['whiskey'] = (True,ingr)
+            temp_ingrs_dict['blended whiskey'] = (True,ingr)
             
         elif ingr == 'scotch' or ingr == 'jim beam' or ingr == 'islay single malt scotch' or ingr == 'johnnie walker' or ingr == 'blended scotch' or ingr == 'whisky':
             temp_ingrs_dict['scotch'] = (True,ingr)
