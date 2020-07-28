@@ -111,7 +111,7 @@ def home(request):
                         
             multiplier = choice[0]/sum(volumes)              
                                
-            volumes = [round(x * multiplier,1) for x in volumes]
+            volumes = [round(x * multiplier,2) for x in volumes]
             
             for ingr,idx in ingrs_used:
                 if not pump_ingrs[ingr][0]:
@@ -121,7 +121,7 @@ def home(request):
             
             for meas in np_meas:
                 try:
-                    np_vols.append(f"{float(meas.split(' ')[0]) * multiplier:.1f} {meas.partition(' ')[2]}")
+                    np_vols.append(f"{float(meas.split(' ')[0]) * multiplier:.2g} {meas.partition(' ')[2]}")
                 except:
                     np_vols.append(meas)
             
@@ -138,7 +138,6 @@ def home(request):
             for meas,ingr in zip(np_vols,np_ingrs):
                 sub_str += f"{meas} {ingr.title()}<br/>"
             
-            print(sub_str)
             # tell each pump how many oz to pump
             pump_disp = {}
             for i in range(len(pumps)):
@@ -150,7 +149,7 @@ def home(request):
             print(pump_disp)
             messages.success(request, mark_safe(f'"{choice[1]}" Sent to Barbot'))
             if sub_str != '':
-                messages.success(request, mark_safe(f"You need to add:<br>{sub_str}"))
+                messages.success(request, mark_safe(f"<strong>You need to add</strong>:<br>{sub_str}"))
             return HttpResponseRedirect(reverse('drinks-home')) # necessary to avoid form resubmit
     
     return render(request,'drink_app/home.html', context)
