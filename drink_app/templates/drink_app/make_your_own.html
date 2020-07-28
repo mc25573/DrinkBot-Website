@@ -1,0 +1,26 @@
+{% extends "drink_app/base.html" %}
+
+{% block content %}
+
+    <div class="intro-sec">
+        <div class="home-heading-div">
+            <h1 class="heading1">Drink Bot</h1>           
+            <p class="paragraph1">Make Your Own</p>            
+        </div>
+    </div>
+    <hr class="my-4">
+    <div class="">
+        <form class="form-whole" method="post">
+            {% csrf_token %}
+            <fieldset>
+                <div class="form_grid">       
+                    {% for field in make_your_own %}
+                        <div class="form-field"><label>{{ field.label }}</label>{{ field }}oz</div>
+                    {% endfor %}   
+                </div> 
+            </fieldset>                    
+            <button type="submit" class="btn btn-primary make_drink_btn">Make Drink</button>
+        </form>
+    </div>
+
+{% endblock %}

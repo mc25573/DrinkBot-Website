@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from .models import Drink, Ingredient, Pump, Extra
 from django.db.models import Q
-from .forms import MakeDrinkForm
+from .forms import MakeDrinkForm, MakeYourOwn
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib import messages
 from .cocktailLib import cocktailLib as clib
 from django.utils.safestring import mark_safe
+from django.core.paginator import Paginator
 
 def home(request):
                                    
@@ -149,17 +150,28 @@ def home(request):
             print(pump_disp)
             messages.success(request, mark_safe(f'"{choice[1]}" Sent to Barbot'))
             if sub_str != '':
-                messages.success(request, mark_safe(f"<strong>You need to add</strong>:<br>{sub_str}"))
+                messages.success(request, mark_safe(f"<strong>You need to add</strong><br>{sub_str}"))
+            
             return HttpResponseRedirect(reverse('drinks-home')) # necessary to avoid form resubmit
+        
+        else:
+            form = MakeDrinkForm()
+        
     
     return render(request,'drink_app/home.html', context)
 
 
 
 
-
-
-
+def make_your_own(request):
+    
+    form = MakeYourOwn()
+    
+    context = {
+        'make_your_own': form         
+        }
+    
+    return render(request,'drink_app/make_your_own.html', context)
 
 
 
