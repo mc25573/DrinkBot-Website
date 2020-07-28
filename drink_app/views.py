@@ -28,9 +28,11 @@ def home(request):
     for ingr in pumps:
         ingrs_avail.append(ingr)
         pump_ingrs.append(ingr)
-       
+    
+    # use substitution search to find available ingredients
     ingrs_avail = clib.soft_search(pumps,extras,ingrs_avail,ingrs)
     
+    # remove unavailable ingrs
     for ingr in list(ingrs_avail):
         if not ingrs_avail[ingr][0]:
            del ingrs_avail[ingr]
@@ -50,63 +52,20 @@ def home(request):
                   ).filter(non_pump_ingr1__in=ingrs_avail).filter(non_pump_ingr2__in=ingrs_avail
                   ).filter(non_pump_ingr3__in=ingrs_avail).order_by('name')
    
-    # make more efficient!                                                              
-    for drink in drinks:
-        
-        if drink.ingredient1 != ingrs_avail[drink.ingredient1][1]:
-            drink.substitute1 = ingrs_avail[drink.ingredient1][1]
-            drink.save()
-        else:
-            drink.substitute1 = 'None'
-            drink.save()            
-        if drink.ingredient2 != ingrs_avail[drink.ingredient2][1]:
-            drink.substitute2 = ingrs_avail[drink.ingredient2][1]
-            drink.save()
-        else:
-            drink.substitute2 = 'None'
-            drink.save()
-        if drink.ingredient3 != ingrs_avail[drink.ingredient3][1]:
-            drink.substitute3 = ingrs_avail[drink.ingredient3][1]
-            drink.save()
-        else:
-            drink.substitute3 = 'None'
-            drink.save()   
-            
-        if drink.ingredient4 != ingrs_avail[drink.ingredient4][1]:
-            drink.substitute4 = ingrs_avail[drink.ingredient4][1]
-            drink.save()
-        else:
-            drink.substitute4 = 'None'
-            drink.save()    
-            
-        if drink.ingredient5 != ingrs_avail[drink.ingredient5][1]:
-            drink.substitute5 = ingrs_avail[drink.ingredient5][1]
-            drink.save()
-        else:
-            drink.substitute5 = 'None'
-            drink.save()   
-            
-        if drink.ingredient6 != ingrs_avail[drink.ingredient6][1]:
-            drink.substitute6 = ingrs_avail[drink.ingredient6][1]
-            drink.save()
-        else:
-            drink.substitute6 = 'None'
-            drink.save()
-            
-        if drink.ingredient7 != ingrs_avail[drink.ingredient7][1]:
-            drink.substitute7 = ingrs_avail[drink.ingredient7][1]
-            drink.save()
-        else:
-            drink.substitute7 = 'None'
-            drink.save() 
-            
-        if drink.ingredient8 != ingrs_avail[drink.ingredient8][1]:
-            drink.substitute8 = ingrs_avail[drink.ingredient8][1]
-            drink.save()
-        else:
-            drink.substitute8 = 'None'
-            drink.save()  
-    
+    # add ingredient substitutions for each available drink   
+    for ingrs in drinks.values("ingredient1","ingredient2","ingredient3","ingredient4","ingredient5","ingredient6","ingredient7","ingredient8","name"):
+        substitutes = []
+        for i in range(8):            
+            if ingrs['ingredient'+str(i+1)] != ingrs_avail[ingrs['ingredient'+str(i+1)]][1]:
+                substitutes.append(ingrs_avail[ingrs['ingredient'+str(i+1)]][1])
+            else:
+                substitutes.append('None')
+                
+        Drink.objects.filter(name=ingrs['name']).update(substitute1=substitutes[0],substitute2=substitutes[1],
+                                                        substitute3=substitutes[2],substitute4=substitutes[3],
+                                                        substitute5=substitutes[4],substitute6=substitutes[5],
+                                                        substitute7=substitutes[6],substitute8=substitutes[7])                                                 
+   
     # the key is what is used in templates 
     context = {
         'drinks': drinks,
@@ -120,6 +79,7 @@ def home(request):
         # check whether it's valid:
         if form.is_valid():
             choice = [form.cleaned_data['drink_size'],form.cleaned_data['hidden_field']]
+            #print(Drink.objects.filter(name=choice[1]).values()[0])
             print(choice)
             messages.success(request, f'"{choice[1]}" Sent to Barbot')
             return HttpResponseRedirect(reverse('drinks-home')) # necessary to avoid form resubmit

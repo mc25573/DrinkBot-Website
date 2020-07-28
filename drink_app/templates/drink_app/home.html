@@ -21,6 +21,7 @@
             <div class="drinks_grid">
             
                 {% for drink in drinks %}
+                    <!-- Drink Gallery Blocks -->
                     <a data-toggle="modal" href="#Modal{{ forloop.counter0 }}" class="drink_block">
                         <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;">
                         </div>
