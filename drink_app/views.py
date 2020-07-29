@@ -171,6 +171,16 @@ def make_your_own(request):
         'make_your_own': form         
         }
     
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        form = MakeYourOwn(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            choice = [form.cleaned_data]
+            print(choice)
+            
+            return HttpResponseRedirect(reverse('drink-make-your-own'))
+    
     return render(request,'drink_app/make_your_own.html', context)
 
 

@@ -27,7 +27,19 @@ class MakeDrinkForm(forms.Form):
         
         
 class MakeYourOwn(forms.Form):
+    
+    total = forms.FloatField(label='Total',
+                             max_value=8,
+                             initial=0,
+                             #disabled=True,
+                             widget=forms.NumberInput(attrs={'style': 'max-width:70px;','class':'total_field'}))
+    
     def __init__(self, *args, **kwargs):
         super(MakeYourOwn, self).__init__(*args, **kwargs)
         for i, q in enumerate(Pump.objects.all()):
-            self.fields['%s_field' % i] = forms.FloatField(label=q.ingredient.title(),initial=0,max_value=8,min_value=0,)
+            self.fields[f"field_{i}_{q}"] = forms.FloatField(label=q.ingredient.title(),
+                                                           initial=0,
+                                                           max_value=8,
+                                                           min_value=0,
+                                                           widget=forms.NumberInput(attrs={'style': 'max-width:70px;','class': 'field_to_sum'}))
+            self.fields['total'].widget.attrs['readonly'] = True

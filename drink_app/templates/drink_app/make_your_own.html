@@ -15,12 +15,25 @@
             <fieldset>
                 <div class="form_grid">       
                     {% for field in make_your_own %}
-                        <div class="form-field"><label>{{ field.label }}</label>{{ field }}oz</div>
+                        {% if field.name != 'total' %}
+                        <div class="form-field"><label>{{ field.label }}</label><div>{{ field }} oz</div></div>
+                        {% endif %}
                     {% endfor %}   
                 </div> 
-            </fieldset>                    
+            </fieldset>   
+            <div class="form-total"><label><b>{{ make_your_own.total.label }}</b></label><div>{{ make_your_own.total }} oz</div></div>                 
             <button type="submit" class="btn btn-primary make_drink_btn">Make Drink</button>
         </form>
     </div>
+    
+
+<script> 
+    $('.field_to_sum').on('input',function(){
+        var sum = 0;
+        $('.field_to_sum').each(function(){
+            $('.total_field').val(sum += parseFloat(this.value));
+        }); 
+    });
+</script>
 
 {% endblock %}
