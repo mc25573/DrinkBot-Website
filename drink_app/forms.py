@@ -28,11 +28,12 @@ class MakeDrinkForm(forms.Form):
         
 class MakeYourOwn(forms.Form):
     
-    total = forms.FloatField(label='Total',
-                             max_value=8,
+    total = forms.FloatField(label='Total Vol.',
                              initial=0,
+                             max_value=8,
+                             min_value=1,
                              #disabled=True,
-                             widget=forms.NumberInput(attrs={'style': 'max-width:70px;','class':'total_field'}))
+                             widget=forms.NumberInput(attrs={'style': 'max-width:70px;','class':'total_field form-control'}))
     
     def __init__(self, *args, **kwargs):
         super(MakeYourOwn, self).__init__(*args, **kwargs)
@@ -41,5 +42,5 @@ class MakeYourOwn(forms.Form):
                                                            initial=0,
                                                            max_value=8,
                                                            min_value=0,
-                                                           widget=forms.NumberInput(attrs={'style': 'max-width:70px;','class': 'field_to_sum'}))
-            self.fields['total'].widget.attrs['readonly'] = True
+                                                           widget=forms.NumberInput(attrs={'style': 'max-width:60px;','class': 'field_to_sum form-control'}))
+        self.fields['total'].widget.attrs['readonly'] = True

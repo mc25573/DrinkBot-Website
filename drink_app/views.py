@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Drink, Ingredient, Pump, Extra
 from django.db.models import Q
 from .forms import MakeDrinkForm, MakeYourOwn
@@ -152,10 +152,10 @@ def home(request):
             if sub_str != '':
                 messages.success(request, mark_safe(f"<strong>You need to add</strong><br>{sub_str}"))
             
-            return HttpResponseRedirect(reverse('drinks-home')) # necessary to avoid form resubmit
+            return redirect('drinks-home') # necessary to avoid form resubmit
         
-        else:
-            form = MakeDrinkForm()
+    else:
+        form = MakeDrinkForm()
         
     
     return render(request,'drink_app/home.html', context)
@@ -170,7 +170,7 @@ def make_your_own(request):
     context = {
         'make_your_own': form         
         }
-    
+
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = MakeYourOwn(request.POST)
@@ -179,8 +179,15 @@ def make_your_own(request):
             choice = [form.cleaned_data]
             print(choice)
             
-            return HttpResponseRedirect(reverse('drink-make-your-own'))
-    
+            return redirect('drink-make-your-own')
+        
+        else:
+            print(form.errors)
+            #return redirect('drink-make-your-own')
+            
+    else:
+        form = MakeYourOwn()
+              
     return render(request,'drink_app/make_your_own.html', context)
 
 
