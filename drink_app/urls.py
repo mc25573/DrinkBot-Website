@@ -9,5 +9,6 @@ from django.urls import path
 
 urlpatterns = [
     path('', views.home, name = 'drinks-home'),
-    path('make-your-own/', views.make_your_own, name='drink-make-your-own')
+    path('make-your-own/', views.make_your_own, name='drink-make-your-own'),
+    path('all-drinks/', views.all_drinks, name='all-drinks')
 ]

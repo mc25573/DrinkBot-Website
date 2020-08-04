@@ -1,6 +1,6 @@
 .paragraph1 {
     text-align: center;
-    margin-top: 0px;
+    margin-top: 10px;
     
 }
 
@@ -8,7 +8,6 @@
     text-align: center;
     margin-top: 20px;
     font-weight: bold;
-
 }
 
 .body {
@@ -63,12 +62,13 @@
 .drinks_grid {
   display: grid;
   grid-gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(250px, .5fr));
+  column-gap: 50px;
+  grid-template-columns: repeat(auto-fit, minmax(250px, .25fr));
   grid-auto-rows: 300px;
   grid-auto-flow: row dense;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
+  align-content: center !important;
+  justify-content: center !important;
+  align-items: center !important;
   justify-items: center !important;
   width: 90vw;
   max-width: 1600px;
@@ -210,7 +210,6 @@ button:focus,button:active {
     flex-direction: row;
 }    
 
-
 .marg-top {
     margin-top: 15px;
 }
@@ -229,18 +228,16 @@ input[data-readonly] {
 }
 */
 
-
 .navbar-brand {
-position: absolute;
-margin-left: auto;
-margin-right: auto;
-left: 0;
-right: 0;
-text-align: center;
-max-width: 200px;
-font-size: 32px;
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+    text-align: center;
+    max-width: 200px;
+    font-size: 32px;
 }
-
 
 
 

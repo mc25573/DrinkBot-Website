@@ -68,10 +68,15 @@ def home(request):
                                                         substitute3=substitutes[2],substitute4=substitutes[3],
                                                         substitute5=substitutes[4],substitute6=substitutes[5],
                                                         substitute7=substitutes[6],substitute8=substitutes[7])                                                 
-   
+
+    paginator = Paginator(drinks, 25) # Show 25 contacts per page.
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
     # the key is what is used in templates 
     context = {
-        'drinks': drinks,
+        'drinks': page_obj,
         'loops': range(1,9),
         'make_drink_form': form         
         }
@@ -161,8 +166,6 @@ def home(request):
     return render(request,'drink_app/home.html', context)
 
 
-
-
 def make_your_own(request):
     
     form = MakeYourOwn()
@@ -177,23 +180,53 @@ def make_your_own(request):
         # check whether it's valid:
         if form.is_valid():
             choice = [form.cleaned_data]
-            print(choice)
-            
+            print(choice)    
+            messages.success(request, 'Drink Sent to Barbot')
             return redirect('drink-make-your-own')
-        
+       
         else:
             print(form.errors)
-            #return redirect('drink-make-your-own')
-            
+            context['make_your_own_errors'] = "Ensure the Total Vol. field is between 1 and 8"            
     else:
         form = MakeYourOwn()
               
     return render(request,'drink_app/make_your_own.html', context)
 
 
+def all_drinks(request):
+    
+    drinks = Drink.objects.all().order_by('name')
+    
+    name_contains = request.GET.get('name_contains')
+    is_iba = request.GET.get('is_iba')
+    ingredients = request.GET.getlist('ingredients-all')
+    ingredients_any = request.GET.getlist('ingredients-any')
+    drink_type = request.GET.getlist('type')
+    
+    if name_contains != '' and name_contains is not None:
+        drinks = drinks.filter(name__icontains=name_contains)        
+        
+    if drink_type and drink_type is not None:
+        drinks = drinks.filter(mix_type__in=drink_type)        
+        
+    if is_iba == 'on':
+        drinks = drinks.exclude(iba__exact='None')
+        
+    if ingredients and ingredients is not None:
+        drinks = [drink for drink in drinks if set(ingredients).issubset(set(drink.get_ingrs()))]
+       
+    if ingredients_any and ingredients_any is not None:
+        drinks = [drink for drink in drinks if set(ingredients_any).intersection(set(drink.get_ingrs()))]
+        
+    paginator = Paginator(drinks, 25) # Show 25 contacts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    context = {
+        'drinks': page_obj ,
+        'ingrs': Ingredient.objects.all().order_by('name')
+        }
 
-
-
-
+    return render(request,'drink_app/all_drinks.html', context)
 
 

@@ -23,7 +23,7 @@
             <div class="drinks_grid">
             
                 {% for drink in drinks %}
-                    <!-- Drink Gallery Block -->
+                    <!-- Gallery Drink Block -->
                     <a data-toggle="modal" href="#Modal{{ forloop.counter0 }}" class="drink_block">
                         <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;">
                         </div>
@@ -79,13 +79,24 @@
                         </div>
                       </div>
                     </div>
-                {% endfor %}
+                {% endfor %}          
                 
             </div>
-        </div>
+        </div>        
     </div>
     
-    
+    <!-- Page Numbers -->
+    <div class="d-flex justify-content-center">
+        {% if drinks.paginator.num_pages > 1 %}
+            {% for num in drinks.paginator.page_range %}
+                {% if drinks.number == num %}
+                    <a class="btn btn-info mb-4 mr-1" href="?page={{ num }}"> {{ num }} </a>
+                {% else %}
+                    <a class="btn btn-outline-info mb-4 mr-1" href="?page={{ num }}"> {{ num }} </a>
+                {% endif %}
+            {% endfor %}               
+        {% endif %}
+    </div>
     
 {% endblock content%}    
 

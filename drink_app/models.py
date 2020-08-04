@@ -75,8 +75,10 @@ class Drink(models.Model):
     def get_ingrs_subs(self):
         all_ingr = [self.ingredient1,self.ingredient2,self.ingredient3,self.ingredient4,self.ingredient5,self.ingredient6,
                 self.ingredient7,self.ingredient8,self.non_pump_ingr1,self.non_pump_ingr2,self.non_pump_ingr3]
+        
         all_subs = [self.substitute1,self.substitute2,self.substitute3,self.substitute4,self.substitute5,self.substitute6,
-                self.substitute7,self.substitute8,'None','None','None']       
+                self.substitute7,self.substitute8,'None','None','None']     
+        
         ingrs_subs = []       
         for ingr,sub in zip(all_ingr,all_subs):
             if ingr != 'None':

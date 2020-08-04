@@ -1,0 +1,162 @@
+{% extends "drink_app/base.html" %}
+{% load drink_app_extras %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/multiple-select-js/dist/css/multiple-select.css">
+<script src="https://cdn.jsdelivr.net/npm/multiple-select-js/dist/js/multiple-select.js"></script>
+    
+    <div class="intro-sec">
+        <div class="home-heading-div">                     
+            <p class="paragraph1">Find Drinks</p>            
+        </div>
+    </div>
+    <div class="filter-section container d-flex flex-column justify-content-center mb-5">
+        <form method="GET" action=".">
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                  <label for="inputAddress">Name</label>
+                  <input type="text" class="form-control" id="name" placeholder="Name contains" type="search" name="name_contains">
+                </div>
+            </div>  
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="select-ingredient">Ingredients (ALL)</label>
+                    <select id="select-multiple-ingr-all" name="ingredients-all" multiple>
+                      {% for ingr in ingrs %}
+                          <option value="{{ ingr.name }}">{{ ingr.name|title }}</option>
+                      {% endfor %}
+                    </select>
+                </div> 
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="select-ingredient">Ingredients (ANY)</label>
+                    <select id="select-multiple-ingr-any" name="ingredients-any" multiple>
+                      {% for ingr in ingrs %}
+                          <option value="{{ ingr.name }}">{{ ingr.name|title }}</option>
+                      {% endfor %}
+                    </select>
+                </div> 
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-12">
+                    <label for="select-type">Drink Type</label>
+                    <select id="select-multiple-type" name="type" multiple>
+                        <option value="shaken">Shaken</option>
+                        <option value="stirred">Stirred</option>
+                        <option value="shot">Shot</option>
+                        <option value="beer">Beer</option>
+                        <option value="tea">Tea</option>
+                        <option value="blended">Blended</option>
+                        <option value="coffee">Coffee</option>
+                        <option value="milkshake">Milkshake</option>
+                        <option value="punch">Punch</option>
+                    </select>
+                </div> 
+            </div>              
+            <div class="form-check custom-control custom-checkbox col-md-12">
+              <input type="checkbox" class="custom-control-input" id="iba" name="is_iba">
+              <label class="custom-control-label" for="iba">Is IBA</label>
+            </div>                             
+            <button type="submit" class="btn btn-primary mt-3">Search</button>
+        </form>
+    </div>
+    
+    <div class="drink_select_sec">
+        <div class="drink_grid_wrapper">
+            <div class="drinks_grid">
+            
+                {% for drink in drinks %}
+                    <!-- Drink Gallery Block -->
+                    <a data-toggle="modal" href="#Modal{{ forloop.counter0 }}" class="drink_block">
+                        <div class="image_div" style="background:url('{{drink.thumbnail}}'); background-size: cover;background-position: 50% 20%;background-repeat: no-repeat;">
+                        </div>
+                        <div class="drink_text_div">
+                            <h2 class="drink_name">{{ drink.name|title }}</h2>
+                        </div>
+                    </a>
+                                      
+                    <!-- Modal -->
+                    <div class="modal fade" id="Modal{{ forloop.counter0 }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered" role="document" class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalCenterTitle"> {{ drink.name|title }} </h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body"> 
+                            <div class="d-flex justify-content-center">
+                                <div class="modal_img rounded" style="background:url('{{drink.thumbnail}}'); background-size: contain;background-position: 50% 50%;background-repeat: no-repeat;">
+                                </div>
+                            </div>
+                            <div class="modal_drink_descript d-flex flex-row justify-content-around">
+                                <div>
+                                    <h6> Ingredients </h6> 
+                                    <ol>                                                          
+                                        {% for ingr,sub in drink.get_ingrs_subs %}                                           
+                                            <li> {{ ingr|title }}</li>                                            
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                                <div>
+                                    <h6> Measurements </h6> 
+                                    <ol>                                                          
+                                        {% for meas in drink.get_meas %}                                            
+                                            <li> {{ meas }} </li>                                            
+                                        {% endfor %}
+                                    </ol>  
+                                </div>                         
+                            </div>
+                            <h6 class="ingr_heading"> Instructions </h6> 
+                                <p style="text-align: center;"> {{ drink.instructions }} </p>
+                          </div>
+                          {% if drink.iba != 'None' %}
+                              <div class="modal-footer d-flex flex-column justify-content-left">                         
+                                  <h6> {{ drink.iba }} </h6>                          
+                              </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                {% endfor %}          
+                
+            </div>
+        </div>        
+    </div>
+    
+    <!-- Page Numbers -->
+    <div class="d-flex justify-content-center">
+        {% if drinks.paginator.num_pages > 1 %}
+            {% if drinks.has_previous and drinks.paginator.num_pages > 3 %}
+                <a class="btn btn-outline-info mb-4 mr-1" href="?{% url_replace request 'page' 1 %}"> &lt;&lt; </a>
+                <a class="btn btn-outline-info mb-4 mr-1" href="?{% url_replace request 'page' drinks.previous_page_number %}"> &lt; </a>
+            {% endif %}
+            {% for num in drinks.paginator.page_range %}
+                {% if drinks.number == num %}
+                    <a class="btn btn-info mb-4 mr-1" href="?{% url_replace request 'page' num %}"> {{ num }} </a>
+                {% elif num > drinks.number|add:'-3' and num < drinks.number|add:'3' %}
+                    <a class="btn btn-outline-info mb-4 mr-1" href="?{% url_replace request 'page' num %}"> {{ num }} </a>
+                {% endif %}
+            {% endfor %} 
+            {% if drinks.has_next and drinks.paginator.num_pages > 3 %}                
+                <a class="btn btn-outline-info mb-4 mr-1" href="?{% url_replace request 'page' drinks.next_page_number %}"> &gt; </a>
+                <a class="btn btn-outline-info mb-4 mr-1" href="?{% url_replace request 'page' drinks.paginator.num_pages %}"> &gt;&gt; </a>
+            {% endif %}              
+        {% endif %}
+    </div>
+    
+    <script>
+    new MultipleSelect('#select-multiple-ingr-all', {
+      placeholder: 'Select ingredients'
+    })
+    new MultipleSelect('#select-multiple-type', {
+      placeholder: 'Select type'
+    })
+    new MultipleSelect('#select-multiple-ingr-any', {
+      placeholder: 'Select ingredients'
+    })
+    </script>
+    
+{% endblock content%}    
