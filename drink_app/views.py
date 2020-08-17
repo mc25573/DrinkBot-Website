@@ -8,6 +8,7 @@ from django.contrib import messages
 from .cocktailLib import cocktailLib as clib
 from django.utils.safestring import mark_safe
 from django.core.paginator import Paginator
+import serial
 
 def home(request):
                                    
@@ -86,6 +87,12 @@ def home(request):
         form = MakeDrinkForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+            
+            ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
+            ser.flush()
+            
+            ser.write(b'1')
+            
             choice = [form.cleaned_data['drink_size'],form.cleaned_data['hidden_field']]
             drink_choice = Drink.objects.filter(name=choice[1]).values()[0]
             
