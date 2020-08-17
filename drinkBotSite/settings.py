@@ -25,7 +25,7 @@ SECRET_KEY = 'not_necessary'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.69','127.0.0.1','192.168.1.85']
+ALLOWED_HOSTS = ['192.168.1.69','127.0.0.1','192.168.1.85','192.168.3.15']
 
 
 # Application definition
