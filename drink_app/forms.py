@@ -12,9 +12,9 @@ class MakeDrinkForm(forms.Form):
     
     DRINK_SIZE_CHOICES = [
     ('std', 'Standard'),
-    ('4', 'Small (4 oz)'),
-    ('6', 'Medium (6 oz)'),
-    ('8', 'Large (8 oz)'),
+    ('3', 'Small (3 oz)'),
+    ('5', 'Medium (5 oz)'),
+    ('7', 'Large (7 oz)'),
     ]
     
     drink_size = forms.ChoiceField(choices=DRINK_SIZE_CHOICES)   

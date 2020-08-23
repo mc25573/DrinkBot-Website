@@ -8,7 +8,7 @@ from django.contrib import messages
 from .cocktailLib import cocktailLib as clib
 from django.utils.safestring import mark_safe
 from django.core.paginator import Paginator
-import serial
+#import serial
 
 def home(request):
                                    
@@ -88,10 +88,6 @@ def home(request):
         # check whether it's valid:
         if form.is_valid():
             
-            ser = serial.Serial('/dev/ttyACM0', 9600, timeout=1)
-            ser.flush()
-            
-            ser.write(b'1')
             
             choice = [form.cleaned_data['drink_size'],form.cleaned_data['hidden_field']]
             drink_choice = Drink.objects.filter(name=choice[1]).values()[0]
@@ -146,7 +142,7 @@ def home(request):
                 else:
                     man_sub_str = f"({ingrs_avail[ingr][1].title()})"
                     
-                sub_str += f"{volumes[idx-1]} oz {ingr.title()} {man_sub_str}<br/>"    
+                sub_str += f"{volumes[idx-1]} oz {ingr.title()} {man_sub_str}<br>"    
                         
             for meas,ingr in zip(np_vols,np_ingrs):
                 sub_str += f"{meas} {ingr.title()}<br/>"
@@ -160,6 +156,22 @@ def home(request):
                 pump_disp[pumps[sub]] += volumes[idx-1]
 
             print(pump_disp)
+            
+            string_for_arduino = []
+            
+            for key,val in pump_disp.items():
+                if val > 0:
+                    string_for_arduino.append(key[-1]) # pump number
+                    string_for_arduino.append(str(val)) # pump volume
+                    
+            arduino_string = f"<{','.join(string_for_arduino)}>"
+            ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
+            ser.flush()            
+            ser.write(bytes(arduino_string, encoding='utf-8'))
+            ser.close()  
+            #print(arduino_string)
+            #print(len(arduino_string))
+            
             messages.success(request, mark_safe(f'"{choice[1]}" Sent to Barbot'))
             if sub_str != '':
                 messages.success(request, mark_safe(f"<strong>You need to add</strong><br>{sub_str}"))
