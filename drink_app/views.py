@@ -163,8 +163,9 @@ def home(request):
                 if val > 0:
                     string_for_arduino.append(key[-1]) # pump number
                     string_for_arduino.append(str(val)) # pump volume
-                    
-            arduino_string = f"<{','.join(string_for_arduino)}>"
+            
+            # 1 at the 0 index = forward pump direction
+            arduino_string = f"<1,{','.join(string_for_arduino)}>" 
             ser = serial.Serial('/dev/ttyACM0', 115200, timeout=1)
             ser.flush()            
             ser.write(bytes(arduino_string, encoding='utf-8'))
@@ -222,6 +223,7 @@ def all_drinks(request):
     ingredients_any = request.GET.getlist('ingredients-any')
     drink_type = request.GET.getlist('type')
     
+    # for filter form
     if name_contains != '' and name_contains is not None:
         drinks = drinks.filter(name__icontains=name_contains)        
         
